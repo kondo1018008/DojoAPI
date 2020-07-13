@@ -2,8 +2,8 @@
 ## ユーザ関連API
 |エンドポイント|HTTPメソッド|実装済み|
 |---|---|---|
-|/user/create|POST|△|
-|/user/get|GET||
+|/user/create|POST|○|
+|/user/get|GET|○|
 |/user/update|PUT||
 ## ガチャ関連API
 |エンドポイント|HTTPメソッド|実装済み|
