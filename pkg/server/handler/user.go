@@ -15,9 +15,10 @@ import (
 
 func HandleUserGet() gin.HandlerFunc{
 	return func(c *gin.Context){
+
 		user := model.User{}
 		db := db2.GetDB()
-		token := c.Param("token")
+		token := c.Request.Header.Get("x-token")
 		fmt.Println("token="+ token)
 		db.Where("Token = ?", token).First(&user)
 		fmt.Println(user)

@@ -16,7 +16,7 @@ func router() *gin.Engine {
 	u := r.Group("/user")
 	{
 		u.POST("/create", handler.HandleUserCreate())
-		u.GET("/get/:token", handler.HandleUserGet())
+		u.GET("/get", handler.HandleUserGet())
 		//u.PUT("/update", )
 	}
 	return r
