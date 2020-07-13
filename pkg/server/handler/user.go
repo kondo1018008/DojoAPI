@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"encoding/json"
+	"fmt"
 	//"encoding/json"
 	"github.com/gin-gonic/gin"
 	db2 "github.com/kondo1018008/DojoAPI/pkg/db"
@@ -25,11 +25,9 @@ func HandleUserCreate() gin.HandlerFunc{
 		db := db2.GetDB()
 
 
-		var requestBody authCreateRequest
-		json.NewDecoder(c.Request.Body).Decode(&requestBody)
-		/*if err := c.BindJSON(&user); err != nil {
-			c.String(http.StatusBadRequest, "Request is failed: "+ err.Error())
-		}*/
+		/*var requestBody authCreateRequest
+		json.NewDecoder(c.Request.Body).Decode(&requestBody)*/
+
 
 		userID, err := uuid.NewRandom()
 		if err != nil {
@@ -44,15 +42,24 @@ func HandleUserCreate() gin.HandlerFunc{
 			c.String(http.StatusInternalServerError, err.Error())
 			return
 		}
-		user = model.User{ID:userID.String(), Name:requestBody.Name, Token:authToken.String()}
+
+		user.ID = userID.String()
+		user.Token = authToken.String()
 		user.CreatedAt = now
 		user.UpdatedAt = now
 
-		db.NewRecord(user)
-		db.Create(&user)
-		if db.NewRecord(user) == false {
-			c.JSON(http.StatusOK, user)
+		if err := c.BindJSON(&user); err != nil {
+			c.String(http.StatusBadRequest, "Request is failed: "+ err.Error())
 		}
+
+		fmt.Println(db.NewRecord(user))
+		db.Create(&user)
+		fmt.Println(db.NewRecord(user))
+		c.JSON(http.StatusOK, gin.H{
+			"token":authToken.String(),
+		})
+
+
 	}
 }
 /*
@@ -67,6 +74,6 @@ type authCreateRequest struct {
 	Name string `json:"name"`
 }
 
-/*type authCreateResponse struct {
+type authCreateResponse struct {
 	Token string `json:"token"`
-}*/
+}
