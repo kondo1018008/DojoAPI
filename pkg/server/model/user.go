@@ -1,14 +1,9 @@
 package model
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type User struct{
-	gorm.Model
-	ID string`gorm:"primary_key"`
-	Name string `gorm:"primary_key"`
-	Token string
+	ID string
+	Name string
+	Token string `gorm:"primary_key"`
 }
 /*
 

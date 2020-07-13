@@ -8,20 +8,27 @@ import (
 	"github.com/kondo1018008/DojoAPI/pkg/server/model"
 	"log"
 	"net/http"
-	"time"
+	_ "time"
 	"github.com/google/uuid"
 )
 
-/*func HandleUserGet() gin.HandlerFunc{
-	return func(c gin.Context){
 
+func HandleUserGet() gin.HandlerFunc{
+	return func(c *gin.Context){
+		user := model.User{}
+		db := db2.GetDB()
+		token := c.Param("token")
+		fmt.Println("token="+ token)
+		db.Where("Token = ?", token).First(&user)
+		fmt.Println(user)
+		c.JSON(http.StatusOK, user)
 	}
-}*/
+}
 
 func HandleUserCreate() gin.HandlerFunc{
 	return func(c *gin.Context){
 		user := model.User{}
-		now := time.Now()
+		//now := time.Now()
 		db := db2.GetDB()
 
 
@@ -45,8 +52,8 @@ func HandleUserCreate() gin.HandlerFunc{
 
 		user.ID = userID.String()
 		user.Token = authToken.String()
-		user.CreatedAt = now
-		user.UpdatedAt = now
+		//user.CreatedAt = now
+		//user.UpdatedAt = now
 
 		if err := c.BindJSON(&user); err != nil {
 			c.String(http.StatusBadRequest, "Request is failed: "+ err.Error())
@@ -54,10 +61,13 @@ func HandleUserCreate() gin.HandlerFunc{
 
 		fmt.Println(db.NewRecord(user))
 		db.Create(&user)
-		fmt.Println(db.NewRecord(user))
-		c.JSON(http.StatusOK, gin.H{
-			"token":authToken.String(),
-		})
+		if db.NewRecord(user) == false{
+			fmt.Println(db.NewRecord(user))
+			c.JSON(201, gin.H{
+				"token":authToken.String(),
+			})
+		}
+
 
 
 	}
