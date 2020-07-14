@@ -22,7 +22,9 @@ func HandleUserGet() gin.HandlerFunc{
 		fmt.Println("token="+ token)
 		db.Where("Token = ?", token).First(&user)
 		fmt.Println(user)
+
 		c.JSON(http.StatusOK, user)
+
 	}
 }
 
@@ -73,12 +75,28 @@ func HandleUserCreate() gin.HandlerFunc{
 
 	}
 }
-/*
+
 func HandleUserUpdate() gin.HandlerFunc{
 	return func(c *gin.Context){
+		user := model.User{}
+		resp := model.User{}
+		db := db2.GetDB()
+		token := c.Request.Header.Get("x-token")
+		fmt.Println("token="+ token)
 
+		db.Where("Token = ?", token).First(&user)
+		resp = user
+		if err := c.BindJSON(&user); err != nil {
+			c.String(http.StatusBadRequest, "Request is failed: "+ err.Error())
+		}
+		db.Model(&user).Where("token = ?", token).Update("name", user.Name)
+		if resp != user && {
+			c.Status(http.StatusAccepted)
+		}
+		//user.Token = token
+		fmt.Println(user)
 	}
-}*/
+}
 
 
 type authCreateRequest struct {
