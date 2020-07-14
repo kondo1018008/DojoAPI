@@ -4,7 +4,7 @@
 |---|---|---|
 |/user/create|POST|○|
 |/user/get|GET|○|
-|/user/update|PUT||
+|/user/update|PUT|○|
 ## ガチャ関連API
 |エンドポイント|HTTPメソッド|実装済み|
 |---|---|---|
