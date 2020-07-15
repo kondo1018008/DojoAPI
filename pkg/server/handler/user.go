@@ -90,7 +90,7 @@ func HandleUserUpdate() gin.HandlerFunc{
 			c.String(http.StatusBadRequest, "Request is failed: "+ err.Error())
 		}
 		db.Model(&user).Where("token = ?", token).Update("name", user.Name)
-		if resp != user && {
+		if resp != user {
 			c.Status(http.StatusAccepted)
 		}
 		//user.Token = token
