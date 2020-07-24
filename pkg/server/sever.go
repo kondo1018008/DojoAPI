@@ -19,6 +19,16 @@ func router() *gin.Engine {
 		u.GET("/get", handler.HandleUserGet())
 		u.PUT("/update", handler.HandleUserUpdate() )
 	}
+
+	g := r.Group("/gacha")
+	{
+		g.POST("/draw", handler.HandleGachaDraw())
+	}
+
+	c := r.Group("/character")
+	{
+		//c.GET("list", handler.HandleCharacterGet())
+	}
 	return r
 
 }
