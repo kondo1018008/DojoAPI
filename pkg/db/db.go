@@ -40,5 +40,5 @@ func Close(){
 
 func autoMigration() {
 	db.Set("gorm:table_options", "ENGINE=InnoDB")
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Character{}, &model.UserCharacter{}, &model.Gacha{})
 }
